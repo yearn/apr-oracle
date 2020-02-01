@@ -1,91 +1,14 @@
 {
-  "contractName": "DyDx",
+  "contractName": "Context",
   "abi": [
     {
-      "constant": true,
       "inputs": [],
-      "name": "getEarningsRate",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct DyDx.val",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
       "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "marketId",
-          "type": "uint256"
-        }
-      ],
-      "name": "getMarketInterestRate",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "internalType": "struct DyDx.val",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "marketId",
-          "type": "uint256"
-        }
-      ],
-      "name": "getMarketTotalPar",
-      "outputs": [
-        {
-          "components": [
-            {
-              "internalType": "uint128",
-              "name": "borrow",
-              "type": "uint128"
-            },
-            {
-              "internalType": "uint128",
-              "name": "supply",
-              "type": "uint128"
-            }
-          ],
-          "internalType": "struct DyDx.set",
-          "name": "",
-          "type": "tuple"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
+      "stateMutability": "nonpayable",
+      "type": "constructor"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"getEarningsRate\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"internalType\":\"struct DyDx.val\",\"name\":\"\",\"type\":\"tuple\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"}],\"name\":\"getMarketInterestRate\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"internalType\":\"struct DyDx.val\",\"name\":\"\",\"type\":\"tuple\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"marketId\",\"type\":\"uint256\"}],\"name\":\"getMarketTotalPar\",\"outputs\":[{\"components\":[{\"internalType\":\"uint128\",\"name\":\"borrow\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"supply\",\"type\":\"uint128\"}],\"internalType\":\"struct DyDx.set\",\"name\":\"\",\"type\":\"tuple\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"DyDx\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x67876da3a05b39f167786fb5511fd3899b3d0945b0a75b603cb3384aabe3d98e\",\"urls\":[\"bzz-raw://fb83ea8dc39d4aa5b0b76e1a42a0c7d592f50277f834b20cf494b3eccd7b61ef\",\"dweb:/ipfs/QmTWdUCLmSkHPxg1AgtTnawWUr9hETzWjH2qqQgX5izGNd\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"Context\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x67876da3a05b39f167786fb5511fd3899b3d0945b0a75b603cb3384aabe3d98e\",\"urls\":[\"bzz-raw://fb83ea8dc39d4aa5b0b76e1a42a0c7d592f50277f834b20cf494b3eccd7b61ef\",\"dweb:/ipfs/QmTWdUCLmSkHPxg1AgtTnawWUr9hETzWjH2qqQgX5izGNd\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -32680,7 +32603,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-02-01T03:32:03.014Z",
+  "updatedAt": "2020-02-01T03:32:02.997Z",
   "devdoc": {
     "methods": {}
   },
