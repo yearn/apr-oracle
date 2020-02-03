@@ -347,7 +347,7 @@ interface ILendFModel {
       * @param borrows The total borrows of the asset in the market
       * @return Success or failure and the supply interest rate per block scaled by 10e18
       */
-    function getSupplyRate(address asset, uint cash, uint borrows) public view returns (uint, uint);
+    function getSupplyRate(address asset, uint cash, uint borrows) external view returns (uint, uint);
 }
 
 
@@ -390,7 +390,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     return supplyRateMantissa.mul(2102400);
   }
 
-  function getLENDFAPRAdjusted(address token, supply) public view returns (uint256) {
+  function getLENDFAPRAdjusted(address token, uint256 supply) public view returns (uint256) {
     (,, address interestRateModel, uint256 totalSupply,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
     (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalSupply.add(supply).add(totalBorrows), totalBorrows);
     return supplyRateMantissa.mul(2102400);

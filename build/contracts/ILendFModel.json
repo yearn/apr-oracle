@@ -1,86 +1,32 @@
 {
-  "contractName": "Compound",
+  "contractName": "ILendFModel",
   "abi": [
     {
       "constant": true,
-      "inputs": [],
-      "name": "interestRateModel",
-      "outputs": [
+      "inputs": [
         {
           "internalType": "address",
-          "name": "",
+          "name": "asset",
           "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "cash",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrows",
+          "type": "uint256"
         }
       ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "reserveFactorMantissa",
+      "name": "getSupplyRate",
       "outputs": [
         {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "totalBorrows",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "totalReserves",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "supplyRatePerBlock",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "payable": false,
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [],
-      "name": "getCash",
-      "outputs": [
+        },
         {
           "internalType": "uint256",
           "name": "",
@@ -92,7 +38,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[],\"name\":\"getCash\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"interestRateModel\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"reserveFactorMantissa\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"supplyRatePerBlock\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalBorrows\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"totalReserves\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"Compound\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x4bca4c32b4199724bc095dd2c39b7549d5ed38f0167e0894d08126d1fac57fd2\",\"urls\":[\"bzz-raw://bfc7f829de945f991a027b163eca4a33417583959ae716d87890978d215af90e\",\"dweb:/ipfs/QmP4WgCE1WC63f9JPcuebpYqUytAhGKWTWWmRGB1r19Ej5\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cash\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrows\",\"type\":\"uint256\"}],\"name\":\"getSupplyRate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"getSupplyRate(address,uint256,uint256)\":{\"details\":\"The return value should be scaled by 1e18, thus a return value of     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.\",\"params\":{\"asset\":\"The asset to get the interest rate of\",\"borrows\":\"The total borrows of the asset in the market\",\"cash\":\"The total cash of the asset in the market\"},\"return\":\"Success or failure and the supply interest rate per block scaled by 10e18\"}}},\"userdoc\":{\"methods\":{\"getSupplyRate(address,uint256,uint256)\":{\"notice\":\"Gets the current supply interest rate based on the given asset, total cash and total borrows\"}}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"ILendFModel\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x4bca4c32b4199724bc095dd2c39b7549d5ed38f0167e0894d08126d1fac57fd2\",\"urls\":[\"bzz-raw://bfc7f829de945f991a027b163eca4a33417583959ae716d87890978d215af90e\",\"dweb:/ipfs/QmP4WgCE1WC63f9JPcuebpYqUytAhGKWTWWmRGB1r19Ej5\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -42495,11 +42441,25 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-02-03T06:42:41.842Z",
+  "updatedAt": "2020-02-03T06:42:42.036Z",
   "devdoc": {
-    "methods": {}
+    "methods": {
+      "getSupplyRate(address,uint256,uint256)": {
+        "details": "The return value should be scaled by 1e18, thus a return value of     `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.",
+        "params": {
+          "asset": "The asset to get the interest rate of",
+          "borrows": "The total borrows of the asset in the market",
+          "cash": "The total cash of the asset in the market"
+        },
+        "return": "Success or failure and the supply interest rate per block scaled by 10e18"
+      }
+    }
   },
   "userdoc": {
-    "methods": {}
+    "methods": {
+      "getSupplyRate(address,uint256,uint256)": {
+        "notice": "Gets the current supply interest rate based on the given asset, total cash and total borrows"
+      }
+    }
   }
 }
