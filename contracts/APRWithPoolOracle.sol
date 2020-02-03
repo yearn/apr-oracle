@@ -312,6 +312,44 @@ interface IDDEXModel {
   function polynomialInterestModel(uint256 borrowRatio) external view returns (uint256);
 }
 
+interface ILendF {
+  function getSupplyBalance(address account, address token)
+    external
+    view
+    returns (uint256);
+  function supplyBalances(address account, address token)
+    external
+    view
+    returns (uint256 principal, uint256 interestIndex);
+  function supply(address asset, uint256 amount) external;
+  function withdraw(address asset, uint256 amount) external;
+  function markets(address asset) external view returns (
+    bool isSupported,
+    uint256 blockNumber,
+    address interestRateModel,
+    uint256 totalSupply,
+    uint256 supplyRateMantissa,
+    uint256 supplyIndex,
+    uint256 totalBorrows,
+    uint256 borrowRateMantissa,
+    uint256 borrowIndex
+  );
+}
+
+interface ILendFModel {
+
+    /**
+      * @notice Gets the current supply interest rate based on the given asset, total cash and total borrows
+      * @dev The return value should be scaled by 1e18, thus a return value of
+      *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.
+      * @param asset The asset to get the interest rate of
+      * @param cash The total cash of the asset in the market
+      * @param borrows The total borrows of the asset in the market
+      * @return Success or failure and the supply interest rate per block scaled by 10e18
+      */
+    function getSupplyRate(address asset, uint cash, uint borrows) public view returns (uint, uint);
+}
+
 
 
 contract APRWithPoolOracle is Ownable, Structs {
@@ -330,6 +368,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     DYDX = address(0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e);
     AAVE = address(0x24a42fD28C976A61Df5D00D0599C34c4f90748c8);
     DDEX = address(0x241e82C79452F51fbfc89Fac6d912e021dB1a3B7);
+    LENDF = address(0x0eEe3E3828A45f7601D5F54bF49bB01d1A9dF5ea);
 
   }
 
@@ -341,6 +380,20 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
   function set_new_DYDX(address _new_DYDX) public onlyOwner {
       DYDX = _new_DYDX;
+  }
+  function set_new_LENDF(address _new_LENDF) public onlyOwner {
+      LENDF = _new_LENDF;
+  }
+
+  function getLENDFAPR(address token) public view returns (uint256) {
+    (,,,,uint256 supplyRateMantissa,,,,) = ILendF(LENDF).markets(token);
+    return supplyRateMantissa.mul(2102400);
+  }
+
+  function getLENDFAPRAdjusted(address token, supply) public view returns (uint256) {
+    (,, address interestRateModel, uint256 totalSupply,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
+    (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalSupply.add(supply).add(totalBorrows), totalBorrows);
+    return supplyRateMantissa.mul(2102400);
   }
 
   function getDDEXAPR(address token) public view returns (uint256) {
