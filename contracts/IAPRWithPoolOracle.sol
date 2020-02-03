@@ -13,5 +13,4 @@ interface APRWithPoolOracle {
   function getAaveCore() external view returns (address);
   function getAaveAPR(address token) external view returns (uint256);
   function getAaveAPRAdjusted(address token, uint256 _supply) external view returns (uint256);
-
 }

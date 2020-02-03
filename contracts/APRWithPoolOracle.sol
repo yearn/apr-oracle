@@ -390,8 +390,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
 
   function getLENDFAPRAdjusted(address token, uint256 supply) public view returns (uint256) {
-    (,, address interestRateModel, uint256 totalSupply,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
-    (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalSupply.add(supply), totalBorrows);
+    uint256 totalCash = IERC20(token).balanceOf(LENDF).add(supply);
+    (,, address interestRateModel,,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
+    (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalCash, totalBorrows);
     return supplyRateMantissa.mul(2102400);
   }
 
@@ -407,7 +408,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     address interestRateModel = IDDEX(DDEX).getAsset(token).interestModel;
     uint256 borrowRate = IDDEXModel(interestRateModel).polynomialInterestModel(borrowRatio);
     uint256 borrowInterest = Decimal.mulCeil(borrow, borrowRate);
-    uint256 supplyInterest = Decimal.mulFloor(borrowInterest, Decimal.one().sub(12185788407877));
+    uint256 supplyInterest = Decimal.mulFloor(borrowInterest, Decimal.one().sub(15000000000000));
     return Decimal.divFloor(supplyInterest, supply);
   }
 
