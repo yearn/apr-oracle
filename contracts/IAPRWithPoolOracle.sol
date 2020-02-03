@@ -1,6 +1,9 @@
 
 interface APRWithPoolOracle {
-
+  function getLENDFAPR(address token) external view returns (uint256);
+  function getLENDFAPRAdjusted(address token, uint256 _supply) external view returns (uint256);
+  function getDDEXAPR(address token) external view returns (uint256);
+  function getDDEXAPRAdjusted(address token, uint256 _supply) external view returns (uint256);
   function getCompoundAPR(address token) external view returns (uint256);
   function getCompoundAPRAdjusted(address token, uint256 _supply) external view returns (uint256);
   function getFulcrumAPR(address token) external view returns(uint256);

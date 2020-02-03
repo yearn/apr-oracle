@@ -420,7 +420,6 @@ contract APRWithPoolOracle is Ownable, Structs {
     Compound c = Compound(token);
     InterestRateModel i = InterestRateModel(Compound(token).interestRateModel());
     uint256 cashPrior = c.getCash().add(_supply);
-
     return i.getSupplyRate(cashPrior, c.totalBorrows(), c.totalReserves().add(_supply), c.reserveFactorMantissa()).mul(2102400);
   }
 
