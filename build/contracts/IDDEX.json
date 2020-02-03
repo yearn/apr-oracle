@@ -1,14 +1,30 @@
 {
-  "contractName": "Fulcrum",
+  "contractName": "IDDEX",
   "abi": [
     {
       "constant": true,
-      "inputs": [],
-      "name": "supplyInterestRate",
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "extraBorrowAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "getInterestRates",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "borrowInterestRate",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "supplyInterestRate",
           "type": "uint256"
         }
       ],
@@ -20,17 +36,102 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "uint256",
-          "name": "supplyAmount",
-          "type": "uint256"
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
         }
       ],
-      "name": "nextSupplyInterestRate",
+      "name": "getIndex",
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "",
+          "name": "supplyIndex",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "borrowIndex",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "getTotalSupply",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "asset",
+          "type": "address"
+        }
+      ],
+      "name": "getTotalBorrow",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "getAsset",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "address",
+              "name": "lendingPool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "priceOralce",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "interestModel",
+              "type": "address"
+            }
+          ],
+          "internalType": "struct Structs.Asset",
+          "name": "asset",
+          "type": "tuple"
         }
       ],
       "payable": false,
@@ -38,7 +139,7 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"supplyAmount\",\"type\":\"uint256\"}],\"name\":\"nextSupplyInterestRate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"supplyInterestRate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"Fulcrum\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x722406efb858b23cd39873c218f1f9a8be8d72fe377866cfe6f7d17534bc1f69\",\"urls\":[\"bzz-raw://f796ab29d5bc31551220d490d1d919d60eec8955cd48502c3efa31ad8336692f\",\"dweb:/ipfs/QmadTAStnR5X91KW1bUHMsQYHmSvvLn6w5bYG2ctkHygow\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.12+commit.7709ece9\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getAsset\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"lendingPool\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"priceOralce\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"interestModel\",\"type\":\"address\"}],\"internalType\":\"struct Structs.Asset\",\"name\":\"asset\",\"type\":\"tuple\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getIndex\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"supplyIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowIndex\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"extraBorrowAmount\",\"type\":\"uint256\"}],\"name\":\"getInterestRates\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"borrowInterestRate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"supplyInterestRate\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"getTotalBorrow\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[{\"internalType\":\"address\",\"name\":\"asset\",\"type\":\"address\"}],\"name\":\"getTotalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":\"IDDEX\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/D/ftm/apr-oracle/contracts/APRWithPoolOracle.sol\":{\"keccak256\":\"0x722406efb858b23cd39873c218f1f9a8be8d72fe377866cfe6f7d17534bc1f69\",\"urls\":[\"bzz-raw://f796ab29d5bc31551220d490d1d919d60eec8955cd48502c3efa31ad8336692f\",\"dweb:/ipfs/QmadTAStnR5X91KW1bUHMsQYHmSvvLn6w5bYG2ctkHygow\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
@@ -38239,7 +38340,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-02-03T06:06:48.208Z",
+  "updatedAt": "2020-02-03T06:06:48.227Z",
   "devdoc": {
     "methods": {}
   },
