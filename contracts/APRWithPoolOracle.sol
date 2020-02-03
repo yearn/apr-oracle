@@ -369,7 +369,6 @@ contract APRWithPoolOracle is Ownable, Structs {
     AAVE = address(0x24a42fD28C976A61Df5D00D0599C34c4f90748c8);
     DDEX = address(0x241e82C79452F51fbfc89Fac6d912e021dB1a3B7);
     LENDF = address(0x0eEe3E3828A45f7601D5F54bF49bB01d1A9dF5ea);
-
   }
 
   function set_new_AAVE(address _new_AAVE) public onlyOwner {
@@ -392,7 +391,7 @@ contract APRWithPoolOracle is Ownable, Structs {
 
   function getLENDFAPRAdjusted(address token, uint256 supply) public view returns (uint256) {
     (,, address interestRateModel, uint256 totalSupply,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
-    (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalSupply.add(supply).add(totalBorrows), totalBorrows);
+    (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalSupply.add(supply), totalBorrows);
     return supplyRateMantissa.mul(2102400);
   }
 
@@ -409,7 +408,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     uint256 borrowRate = IDDEXModel(interestRateModel).polynomialInterestModel(borrowRatio);
     uint256 borrowInterest = Decimal.mulCeil(borrow, borrowRate);
     uint256 supplyInterest = Decimal.mulFloor(borrowInterest, Decimal.one().sub(12185788407877));
-    return Decimal.divFloor(supplyInterest, _supply);
+    return Decimal.divFloor(supplyInterest, supply);
   }
 
   function getCompoundAPR(address token) public view returns (uint256) {
