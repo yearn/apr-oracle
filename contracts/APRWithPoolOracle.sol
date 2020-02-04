@@ -409,6 +409,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     (,uint256 supplyRate) = IDDEX(DDEX).getInterestRates(token, 0);
     return supplyRate;
   }
+  
   function getDDEXAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
     if (token == address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE)) {
       token = address(0x000000000000000000000000000000000000000E);
@@ -433,7 +434,11 @@ contract APRWithPoolOracle is Ownable, Structs {
 
   function getCompoundAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
     Compound c = Compound(token);
-    InterestRateModel i = InterestRateModel(Compound(token).interestRateModel());
+    address model = Compound(token).interestRateModel();
+    if (model == address(0)) {
+      return c.supplyRatePerBlock().mul(2102400);
+    }
+    InterestRateModel i = InterestRateModel(model);
     uint256 cashPrior = c.getCash().add(_supply);
     return i.getSupplyRate(cashPrior, c.totalBorrows(), c.totalReserves().add(_supply), c.reserveFactorMantissa()).mul(2102400);
   }
