@@ -6,6 +6,7 @@ interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
     function transfer(address recipient, uint256 amount) external returns (bool);
     function allowance(address owner, address spender) external view returns (uint256);
+    function decimals() external view returns (uint8);
     function approve(address spender, uint256 amount) external returns (bool);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
     event Transfer(address indexed from, address indexed to, uint256 value);
@@ -358,17 +359,19 @@ contract APRWithPoolOracle is Ownable, Structs {
 
   uint256 DECIMAL = 10 ** 18;
 
-  // MAINNET ADDRESSES
   address public DYDX;
   address public AAVE;
   address public DDEX;
   address public LENDF;
+
+  uint256 public liquidationRatio;
 
   constructor() public {
     DYDX = address(0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e);
     AAVE = address(0x24a42fD28C976A61Df5D00D0599C34c4f90748c8);
     DDEX = address(0x241e82C79452F51fbfc89Fac6d912e021dB1a3B7);
     LENDF = address(0x0eEe3E3828A45f7601D5F54bF49bB01d1A9dF5ea);
+    liquidationRatio = 50000000000000000;
   }
 
   function set_new_AAVE(address _new_AAVE) public onlyOwner {
@@ -383,6 +386,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   function set_new_LENDF(address _new_LENDF) public onlyOwner {
       LENDF = _new_LENDF;
   }
+  function set_new_Ratio(uint256 _new_Ratio) public onlyOwner {
+      liquidationRatio = _new_Ratio;
+  }
 
   function getLENDFAPR(address token) public view returns (uint256) {
     (,,,,uint256 supplyRateMantissa,,,,) = ILendF(LENDF).markets(token);
@@ -392,6 +398,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   function getLENDFAPRAdjusted(address token, uint256 supply) public view returns (uint256) {
     uint256 totalCash = IERC20(token).balanceOf(LENDF).add(supply);
     (,, address interestRateModel,,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
+    if (interestRateModel == address(0)) {
+      return 0;
+    }
     (, uint256 supplyRateMantissa) = ILendFModel(interestRateModel).getSupplyRate(token, totalCash, totalBorrows);
     return supplyRateMantissa.mul(2102400);
   }
@@ -408,16 +417,15 @@ contract APRWithPoolOracle is Ownable, Structs {
     address interestRateModel = IDDEX(DDEX).getAsset(token).interestModel;
     uint256 borrowRate = IDDEXModel(interestRateModel).polynomialInterestModel(borrowRatio);
     uint256 borrowInterest = Decimal.mulCeil(borrow, borrowRate);
-    uint256 supplyInterest = Decimal.mulFloor(borrowInterest, Decimal.one().sub(15000000000000));
+    uint256 supplyInterest = Decimal.mulFloor(borrowInterest, Decimal.one().sub(liquidationRatio));
     return Decimal.divFloor(supplyInterest, supply);
   }
 
   function getCompoundAPR(address token) public view returns (uint256) {
-      return Compound(token).supplyRatePerBlock().mul(2102400);
+    return Compound(token).supplyRatePerBlock().mul(2102400);
   }
 
   function getCompoundAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
-    //interestRateModel.getSupplyRate(getCashPrior(), totalBorrows, totalReserves, reserveFactorMantissa);
     Compound c = Compound(token);
     InterestRateModel i = InterestRateModel(Compound(token).interestRateModel());
     uint256 cashPrior = c.getCash().add(_supply);
@@ -427,6 +435,7 @@ contract APRWithPoolOracle is Ownable, Structs {
   function getFulcrumAPR(address token) public view returns(uint256) {
     return Fulcrum(token).supplyInterestRate().div(100);
   }
+
   function getFulcrumAPRAdjusted(address token, uint256 _supply) public view returns(uint256) {
     return Fulcrum(token).nextSupplyInterestRate(_supply).div(100);
   }
@@ -440,7 +449,6 @@ contract APRWithPoolOracle is Ownable, Structs {
     uint256 apr       = (((aprBorrow * usage) / DECIMAL) * DyDx(DYDX).getEarningsRate().value) / DECIMAL;
     return apr;
   }
-
   function getDyDxAPRAdjusted(uint256 marketId, uint256 _supply) public view returns(uint256) {
     uint256 rate      = DyDx(DYDX).getMarketInterestRate(marketId).value;
     uint256 aprBorrow = rate * 31622400;
@@ -471,7 +479,6 @@ contract APRWithPoolOracle is Ownable, Structs {
       core.getReserveTotalBorrowsVariable(token),
       core.getReserveCurrentAverageStableBorrowRate(token)
     );
-
     return newLiquidityRate.div(1e9);
   }
 
