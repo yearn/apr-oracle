@@ -338,16 +338,6 @@ interface ILendF {
 }
 
 interface ILendFModel {
-
-    /**
-      * @notice Gets the current supply interest rate based on the given asset, total cash and total borrows
-      * @dev The return value should be scaled by 1e18, thus a return value of
-      *      `(true, 1000000000000)` implies an interest rate of 0.000001 or 0.0001% *per block*.
-      * @param asset The asset to get the interest rate of
-      * @param cash The total cash of the asset in the market
-      * @param borrows The total borrows of the asset in the market
-      * @return Success or failure and the supply interest rate per block scaled by 10e18
-      */
     function getSupplyRate(address asset, uint cash, uint borrows) external view returns (uint, uint);
 }
 
@@ -406,11 +396,20 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
 
   function getDDEXAPR(address token) public view returns (uint256) {
+    // getIndex is only function that doesn't error on token request
+    (uint256 supplyIndex,) = IDDEX(DDEX).getIndex(token);
+    if (supplyIndex == 0) {
+      return 0;
+    }
     (,uint256 supplyRate) = IDDEX(DDEX).getInterestRates(token, 0);
     return supplyRate;
   }
 
   function getDDEXAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
+    (uint256 supplyIndex,) = IDDEX(DDEX).getIndex(token);
+    if (supplyIndex == 0) {
+      return 0;
+    }
     uint256 supply = IDDEX(DDEX).getTotalSupply(token).add(_supply);
     uint256 borrow = IDDEX(DDEX).getTotalBorrow(token);
     uint256 borrowRatio = borrow.mul(Decimal.one()).div(supply);
