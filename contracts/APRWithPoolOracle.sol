@@ -386,6 +386,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
 
   function getLENDFAPRAdjusted(address token, uint256 supply) public view returns (uint256) {
+    if (token == address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE)) {
+      return 0;
+    }
     uint256 totalCash = IERC20(token).balanceOf(LENDF).add(supply);
     (,, address interestRateModel,,,, uint256 totalBorrows,,) = ILendF(LENDF).markets(token);
     if (interestRateModel == address(0)) {
@@ -396,7 +399,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
 
   function getDDEXAPR(address token) public view returns (uint256) {
-    // getIndex is only function that doesn't error on token request
+    if (token == address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE)) {
+      token = address(0x000000000000000000000000000000000000000E);
+    }
     (uint256 supplyIndex,) = IDDEX(DDEX).getIndex(token);
     if (supplyIndex == 0) {
       return 0;
@@ -404,8 +409,10 @@ contract APRWithPoolOracle is Ownable, Structs {
     (,uint256 supplyRate) = IDDEX(DDEX).getInterestRates(token, 0);
     return supplyRate;
   }
-
   function getDDEXAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
+    if (token == address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE)) {
+      token = address(0x000000000000000000000000000000000000000E);
+    }
     (uint256 supplyIndex,) = IDDEX(DDEX).getIndex(token);
     if (supplyIndex == 0) {
       return 0;
