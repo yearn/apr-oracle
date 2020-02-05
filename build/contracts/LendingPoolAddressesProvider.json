@@ -1125,7 +1125,7 @@
                     "name": "this",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4675,
+                    "referencedDeclaration": 4697,
                     "src": "1082:4:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_contract$_Context_$2553",
@@ -7370,7 +7370,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4683,
+                                "referencedDeclaration": 4705,
                                 "src": "5889:4:1",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_Address_$3060",
@@ -22231,7 +22231,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4709,
+                            "referencedDeclaration": 4731,
                             "src": "16901:4:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_APRWithPoolOracle_$4169",
@@ -22586,7 +22586,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4709,
+                                "referencedDeclaration": 4731,
                                 "src": "17099:4:1",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_APRWithPoolOracle_$4169",
@@ -23974,7 +23974,7 @@
                     "name": "this",
                     "nodeType": "Identifier",
                     "overloadedDeclarations": [],
-                    "referencedDeclaration": 4675,
+                    "referencedDeclaration": 4697,
                     "src": "1082:4:1",
                     "typeDescriptions": {
                       "typeIdentifier": "t_contract$_Context_$2553",
@@ -30219,7 +30219,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4683,
+                                "referencedDeclaration": 4705,
                                 "src": "5889:4:1",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_Address_$3060",
@@ -45080,7 +45080,7 @@
                             "name": "this",
                             "nodeType": "Identifier",
                             "overloadedDeclarations": [],
-                            "referencedDeclaration": 4709,
+                            "referencedDeclaration": 4731,
                             "src": "16901:4:1",
                             "typeDescriptions": {
                               "typeIdentifier": "t_contract$_APRWithPoolOracle_$4169",
@@ -45435,7 +45435,7 @@
                                 "name": "this",
                                 "nodeType": "Identifier",
                                 "overloadedDeclarations": [],
-                                "referencedDeclaration": 4709,
+                                "referencedDeclaration": 4731,
                                 "src": "17099:4:1",
                                 "typeDescriptions": {
                                   "typeIdentifier": "t_contract$_APRWithPoolOracle_$4169",
@@ -45728,7 +45728,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.19",
-  "updatedAt": "2020-02-04T04:16:09.667Z",
+  "updatedAt": "2020-02-05T00:41:07.555Z",
   "devdoc": {
     "methods": {}
   },
