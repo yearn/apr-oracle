@@ -341,8 +341,6 @@ interface ILendFModel {
     function getSupplyRate(address asset, uint cash, uint borrows) external view returns (uint, uint);
 }
 
-
-
 contract APRWithPoolOracle is Ownable, Structs {
   using SafeMath for uint256;
   using Address for address;
@@ -355,6 +353,7 @@ contract APRWithPoolOracle is Ownable, Structs {
   address public LENDF;
 
   uint256 public liquidationRatio;
+  uint256 public dydxModifier;
 
   constructor() public {
     DYDX = address(0x1E0447b19BB6EcFdAe1e4AE1694b0C3659614e4e);
@@ -362,6 +361,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     DDEX = address(0x241e82C79452F51fbfc89Fac6d912e021dB1a3B7);
     LENDF = address(0x0eEe3E3828A45f7601D5F54bF49bB01d1A9dF5ea);
     liquidationRatio = 50000000000000000;
+    dydxModifier = 20;
   }
 
   function set_new_AAVE(address _new_AAVE) public onlyOwner {
@@ -378,6 +378,9 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
   function set_new_Ratio(uint256 _new_Ratio) public onlyOwner {
       liquidationRatio = _new_Ratio;
+  }
+  function set_new_Modifier(uint256 _new_Modifier) public onlyOwner {
+      dydxModifier = _new_Modifier;
   }
 
   function getLENDFAPR(address token) public view returns (uint256) {
@@ -409,7 +412,7 @@ contract APRWithPoolOracle is Ownable, Structs {
     (,uint256 supplyRate) = IDDEX(DDEX).getInterestRates(token, 0);
     return supplyRate;
   }
-  
+
   function getDDEXAPRAdjusted(address token, uint256 _supply) public view returns (uint256) {
     if (token == address(0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE)) {
       token = address(0x000000000000000000000000000000000000000E);
@@ -465,7 +468,8 @@ contract APRWithPoolOracle is Ownable, Structs {
     uint256 aprBorrow = rate * 31622400;
     uint256 borrow    = DyDx(DYDX).getMarketTotalPar(marketId).borrow;
     uint256 supply    = DyDx(DYDX).getMarketTotalPar(marketId).supply;
-    supply = supply.add(_supply);
+    // Arbitrary value to offset calculations
+    supply = supply.add(_supply).mul(dydxModifier);
     uint256 usage     = (borrow * DECIMAL) / supply;
     uint256 apr       = (((aprBorrow * usage) / DECIMAL) * DyDx(DYDX).getEarningsRate().value) / DECIMAL;
     return apr;
