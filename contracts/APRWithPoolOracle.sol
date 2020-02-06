@@ -465,11 +465,12 @@ contract APRWithPoolOracle is Ownable, Structs {
   }
   function getDyDxAPRAdjusted(uint256 marketId, uint256 _supply) public view returns(uint256) {
     uint256 rate      = DyDx(DYDX).getMarketInterestRate(marketId).value;
+    // Arbitrary value to offset calculations
+    _supply = _supply.mul(dydxModifier);
     uint256 aprBorrow = rate * 31622400;
     uint256 borrow    = DyDx(DYDX).getMarketTotalPar(marketId).borrow;
     uint256 supply    = DyDx(DYDX).getMarketTotalPar(marketId).supply;
-    // Arbitrary value to offset calculations
-    supply = supply.add(_supply).mul(dydxModifier);
+    supply = supply.add(_supply);
     uint256 usage     = (borrow * DECIMAL) / supply;
     uint256 apr       = (((aprBorrow * usage) / DECIMAL) * DyDx(DYDX).getEarningsRate().value) / DECIMAL;
     return apr;
